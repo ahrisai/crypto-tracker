@@ -8,7 +8,6 @@ import Coin from './pages/Coin'
 function App() {
   return (
     <BrowserRouter>
-    <div ></div>
       <Header/>
       <Routes>
         <Route path='/' element={<Home/>}/>
