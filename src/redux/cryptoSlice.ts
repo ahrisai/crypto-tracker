@@ -25,14 +25,16 @@ export const fetchTrending = createAsyncThunk(
 export const fetchCoinList = createAsyncThunk(
     'cryptoReducer/fetchCoinList',
     async (currency:CurrencyType,{rejectWithValue}) => {
-        
-        const response = axios.get<Coin[]>(`${CoinList(currency)}`,{
-        }).then(res=>{
 
-            return res.data
-        })
-        .catch(e=>rejectWithValue(e.message))
-        return response
+            const response = axios.get<Coin[]>(`${CoinList(currency)}`,{
+            }).then(res=>{
+                console.log(res.data)
+                return res.data
+            })
+            .catch(e=>rejectWithValue(e.message))
+            return response
+
+       
 
     }
 )
