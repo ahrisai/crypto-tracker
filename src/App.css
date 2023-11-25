@@ -1,17 +1,17 @@
 @font-face {
-  font-family: montseratt;
+  font-family: 'montseratt';
   src: url(./fonts/Montserrat-Regular.ttf);
   font-weight: 400;
 }
 
 @font-face {
-  font-family: montseratt;
+  font-family: 'montseratt';
   src: url(./fonts/Montserrat-Light.ttf);
   font-weight: 300;
 }
 
 @font-face {
-  font-family: montseratt;
+  font-family: 'montseratt';
   src: url(./fonts/Montserrat-ExtraBold.ttf);
   font-weight: 800;
 }
@@ -21,6 +21,7 @@
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  
 }
 
 a{
@@ -31,4 +32,8 @@ a{
 body{
   background-color: #14161a;
   color:#fff;
+}
+
+h1, h2, h3, p, span {
+  font-family: 'montseratt',sans-serif;
 }

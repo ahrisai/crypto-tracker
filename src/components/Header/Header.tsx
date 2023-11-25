@@ -39,7 +39,7 @@ const Header = () => {
       <Container>
         <Toolbar sx={{display:'flex', justifyContent:'space-between'}}>
             
-          <Typography sx={{fontSize:30, fontWeight:700, color:'gold', m:2}}><Link to='/'>CryptoTracker</Link></Typography>
+          <Typography sx={{fontSize:30, fontWeight:700, color:'gold', m:2, fontFamily:'montseratt'}}><Link to='/'>CryptoTracker</Link></Typography>
             <Select value={currency} onChange={(e)=>{handleChange(e)}} variant="outlined" sx={{width:100}} >
             <MenuItem value={'USD'}>USD</MenuItem>
             <MenuItem value={'RUB'}>RUB</MenuItem>
