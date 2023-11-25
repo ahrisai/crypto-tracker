@@ -6,25 +6,34 @@ import { CurrencyType } from '../../types/currencyType'
 import { Container, Typography, TextField, createTheme, TableContainer, LinearProgress, Table, TableHead, TableRow, TableCell, TableBody, Box } from '@mui/material'
 import { ThemeProvider } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { numberWithCommas } from '../../helpers/numberWithCommas'
 const CoinsTable = () => {
   const navigate=useNavigate()
     const dispatch=useAppDispatch()
-    const {coinList, currentCurrency, coinListStatus}=useSelector((state:RootState)=>state.cryptoReducer)
+    const {coinList, currentCurrency,currencySymbol, coinListStatus}=useSelector((state:RootState)=>state.cryptoReducer)
     
     const [search, setSearch] = useState<string>('')
     
     useEffect(() => {
       
+
      dispatch(fetchCoinList(currentCurrency as CurrencyType))
-        
       
-    }, [])
+    }, [currentCurrency])
+
     const handleSearch = (e:string) => {
       setSearch(e)
     }
     const searchedCoins = useMemo(() =>{
-      return coinList.filter(coin=>coin.name.toLowerCase().includes(search.toLowerCase()))
-    }, [search])
+
+      if(search.trim().length===0) return coinList
+    
+      return coinList.filter(coin=>
+        coin.name.toLowerCase()
+        .includes(search.toLowerCase())
+        ||coin.symbol.toLowerCase().includes(search.toLowerCase())
+        )
+    }, [search,coinList])
     function debounce<T extends (...args: any[]) => any>(
       func: T,
       delay: number
@@ -36,7 +45,7 @@ const CoinsTable = () => {
         timeoutId = setTimeout(() => func.apply(this, args), delay);
       } as T;
     }
-
+    
     const darkTheme = createTheme({
       palette: {
         mode: 'dark',
@@ -65,7 +74,7 @@ const CoinsTable = () => {
       <TableContainer>
         {coinListStatus==='pending'
         ?<LinearProgress sx={{backgroundColor:'gold'}}/>
-        :<Table>
+        :<Table sx={{fontFamily: "montseratt"}}>
           <TableHead sx={{backgroundColor:'#eebc1d'}}>
             <TableRow>
             {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
@@ -73,7 +82,7 @@ const CoinsTable = () => {
                       sx={{
                         color: "black",
                         fontWeight: "700",
-                        fontFamily: "montseratt",
+                        
                       }}
                       key={head}
                       align={head === "Coin" ? "left" : "right"}
@@ -94,6 +103,14 @@ const CoinsTable = () => {
                           <Typography sx={{textTransform:'uppercase', fontSize:22}}>{coin.symbol}</Typography>
                           <Typography sx={{color:'darkgrey'}}>{coin.name}</Typography>
                           </Box>
+                        </TableCell>
+                        <TableCell align='right' sx={{fontSize:16}}>
+                          {currencySymbol}
+                          {numberWithCommas(+coin.current_price.toFixed(2))}
+                        </TableCell>
+                        <TableCell align='right' sx={{color: profit ? "green" : "red",fontWeight:700}}>{profit&&'+'}{coin.price_change_24h.toFixed(2)}%</TableCell>
+                        <TableCell align='right' sx={{fontSize:16}}>
+                          {currencySymbol} {numberWithCommas(+coin.market_cap.toString().slice(0,-6))}
                         </TableCell>
                       </TableRow>
                     );
