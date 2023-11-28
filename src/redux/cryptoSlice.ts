@@ -1,4 +1,4 @@
-import { Coin } from './../types/CryptoTypes';
+import { Coin,ICoin } from './../types/CryptoTypes';
 import {createSlice, createAsyncThunk,PayloadAction} from '@reduxjs/toolkit'
 import { currencies } from '../helpers/currencies';
 import { CurrencyType } from '../types/currencyType';
@@ -10,9 +10,9 @@ export const fetchSingleCoin=createAsyncThunk(
     'cryptoReducer/fetchSingleCoin',
     async (id:string,{rejectWithValue}) => {
         
-        const response = axios.get<Coin>(`${SingleCoin(id)}`)
+        const response = axios.get<ICoin>(`${SingleCoin(id)}`)
         .then(res=>{
-                
+                console.log(res.data)
                 return res.data
         })
         .catch(e=>{
@@ -69,7 +69,7 @@ interface ICryptoState{
     coinListStatus:'idle'|'pending'|'error'|'fulfilled',
     coinListError:string
 
-    singleCoin:Coin | null
+    singleCoin:ICoin | null
     singleCoinStatus:'idle'|'pending'|'error'|'fulfilled',
     singleCoinError:string
 
@@ -139,7 +139,7 @@ const cryptoSlice = createSlice({
         [fetchSingleCoin.pending.type]:(state)=>{
             state.singleCoinStatus='pending'
         },
-        [fetchSingleCoin.fulfilled.type]:(state,action:PayloadAction<Coin>)=>{
+        [fetchSingleCoin.fulfilled.type]:(state,action:PayloadAction<ICoin>)=>{
             state.singleCoinStatus='fulfilled'
             state.singleCoin=action.payload
         },

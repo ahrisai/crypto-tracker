@@ -24,7 +24,6 @@ const Carousel = () => {
   );
 
   useEffect(() => {
-    
     dispatch(fetchTrending(currency as CurrencyType));
   }, [currency]);
 
