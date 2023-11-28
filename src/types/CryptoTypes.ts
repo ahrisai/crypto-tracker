@@ -2,7 +2,7 @@ export interface Coin {
     id: string;
     symbol: string;
     name: string;
-    image: string;
+    image: string | ICoinImage;
     current_price: number;
     market_cap: number;
     market_cap_rank: number;
@@ -27,3 +27,9 @@ export interface Coin {
     last_updated: string;
     price_change_percentage_24h_in_currency: number;
 }
+
+export interface ICoinImage{
+    large:string,
+    thumb:string,
+    small:string,
+  }

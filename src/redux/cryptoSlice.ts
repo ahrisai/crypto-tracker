@@ -3,9 +3,25 @@ import {createSlice, createAsyncThunk,PayloadAction} from '@reduxjs/toolkit'
 import { currencies } from '../helpers/currencies';
 import { CurrencyType } from '../types/currencyType';
 import axios from 'axios';
-import { CoinList, TrendingCoins } from './pathes';
-const apiKey= import.meta.env.VITE_CRYPTO_API_KEY
+import { CoinList, SingleCoin, TrendingCoins } from './pathes';
 
+
+export const fetchSingleCoin=createAsyncThunk(
+    'cryptoReducer/fetchSingleCoin',
+    async (id:string,{rejectWithValue}) => {
+        
+        const response = axios.get<Coin>(`${SingleCoin(id)}`)
+        .then(res=>{
+                
+                return res.data
+        })
+        .catch(e=>{
+            return rejectWithValue(e.message)
+        })
+
+        return response
+    }
+)
 
 export const fetchTrending = createAsyncThunk(
     'cryptoReducer/fetchTrending',
@@ -44,12 +60,20 @@ export const fetchCoinList = createAsyncThunk(
 interface ICryptoState{
     currentCurrency:string,
     currencySymbol:string,
+
     trendingCoins:Coin[],
     trendingCoinsStatus:'idle'|'pending'|'error'|'fulfilled',
     trendingCoinsError:string,
+
     coinList:Coin[]
     coinListStatus:'idle'|'pending'|'error'|'fulfilled',
     coinListError:string
+
+    singleCoin:Coin | null
+    singleCoinStatus:'idle'|'pending'|'error'|'fulfilled',
+    singleCoinError:string
+
+
 }
 
 export interface IChangeCurrencyPayload {
@@ -66,7 +90,11 @@ trendingCoinsError:'',
 
 coinList:[],
 coinListStatus:'idle',
-coinListError:''
+coinListError:'',
+
+singleCoin:null,
+singleCoinStatus:'idle',
+singleCoinError:''
 } 
 
 const cryptoSlice = createSlice({
@@ -105,6 +133,19 @@ const cryptoSlice = createSlice({
         [fetchCoinList.rejected.type]:(state,action:PayloadAction<string>)=>{
             state.coinListStatus='error'
             state.coinListError=action.payload
+        },
+
+        //singleCoin
+        [fetchSingleCoin.pending.type]:(state)=>{
+            state.singleCoinStatus='pending'
+        },
+        [fetchSingleCoin.fulfilled.type]:(state,action:PayloadAction<Coin>)=>{
+            state.singleCoinStatus='fulfilled'
+            state.singleCoin=action.payload
+        },
+        [fetchSingleCoin.rejected.type]:(state,action:PayloadAction<string>)=>{
+            state.singleCoinStatus='error'
+            state.singleCoinError=action.payload
         },
     }
 
