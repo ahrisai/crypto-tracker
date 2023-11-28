@@ -38,8 +38,7 @@ const SideBar = styled.div`
 const MarketInfo = styled.div``;
 
 const Coin = () => {
-  const { singleCoin, singleCoinStatus, currentCurrency, currencySymbol } =
-    useSelector((state: RootState) => state.cryptoReducer);
+  
   const dispatch = useAppDispatch();
 
   const params = useParams();
@@ -47,6 +46,8 @@ const Coin = () => {
   useEffect(() => {
     if (params.id) dispatch(fetchSingleCoin(params.id));
   }, []);
+  const { singleCoin, singleCoinStatus, currentCurrency, currencySymbol } =
+    useSelector((state: RootState) => state.cryptoReducer);
   function truncateAfterSecondDot(sentence: string | undefined) {
     if (!sentence) return;
 
@@ -54,12 +55,10 @@ const Coin = () => {
     const secondDotIndex = sentence.indexOf(". ", firstDotIndex + 1);
 
     if (secondDotIndex !== -1) {
-      // Найдены две точки, обрезаем строку после второй точки
       return sentence.slice(0, secondDotIndex + 1);
     }
 
-    // Если не найдено двух точек, возвращаем исходную строку
-    return sentence;
+      return sentence;
   }
   return singleCoinStatus === "pending" || singleCoinStatus === "idle" ? (
     <LinearProgress sx={{ backgroundColor: "gold" }} />
@@ -78,14 +77,39 @@ const Coin = () => {
             truncateAfterSecondDot(singleCoin?.description.en) as string
           )}
         </Typography>
-          <Box display={'flex'}>
-            <Typography variant="h5" sx={{ mb: "20px", fontWeight: 700 }}>Rank: {singleCoin?.market_cap_rank}</Typography>
-            {/* <Typography variant="h5" sx={{ mb: "20px", fontWeight: 700 }}>Current Price: {currencySymbol} {numberWithCommas(singleCoin?.market_data.current_price[currentCurrency.toLowerCase()])}</Typography> */}
-
-          </Box>
+        <Box mt={'20px'} display={"flex"} flexDirection={'column'} rowGap={'20px'}>
+          <Typography variant="h5" sx={{  fontWeight: 700 }}>
+            Rank:  <span style={{fontWeight:400}}>{singleCoin?.market_cap_rank}</span>
+          </Typography>
+           
+          <Typography variant="h5" sx={{  fontWeight: 700 }}>
+            Current Price: &nbsp;
+            <span style={{fontWeight:400}}>
+            {currencySymbol}{" "}
+            {numberWithCommas(
+              singleCoin?.market_data.current_price[
+                currentCurrency.toLowerCase()
+              ]
+            )}
+            </span>
+            
+          </Typography>
+          <Typography variant="h5" fontWeight={700}> 
+          Market Cap: &nbsp;
+          <span style={{fontWeight:400}}>
+            
+          {currencySymbol}{" "}
+          {numberWithCommas(
+              singleCoin?.market_data.market_cap[
+                currentCurrency.toLowerCase()
+              ]
+            )?.toString().slice(0,-6)}M
+          </span>
+            </Typography>
+        </Box>
       </SideBar>
 
-      <CoinInfo />
+      <CoinInfo/>
     </Container>
   );
 };

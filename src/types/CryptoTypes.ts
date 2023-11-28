@@ -78,7 +78,9 @@ export interface Coin {
     roi: {
       // Определите тип для свойства roi, если необходимо.
     };
-    // Другие свойства market_data, если они есть.
+    market_cap:{
+      [currency:string]:number
+    }
   }
   
   interface Ticker {
@@ -148,4 +150,6 @@ export interface Coin {
   
   // Пример использования интерфейса
   
-  
+  export interface ICryptoChart{
+    prices:any[],
+  }
