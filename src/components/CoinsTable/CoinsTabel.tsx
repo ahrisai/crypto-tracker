@@ -34,8 +34,11 @@ const CoinsTable = () => {
     dispatch(fetchCoinList(currentCurrency as CurrencyType));
   }, [currentCurrency]);
 
+  
+  
   const handleSearch = (e: string) => {
     setSearch(e);
+    if(page!=1) setPage(1)
   };
   const searchedCoins = useMemo(() => {
     if (search.trim().length === 0) return coinList;
@@ -46,17 +49,7 @@ const CoinsTable = () => {
         coin.symbol.toLowerCase().includes(search.toLowerCase())
     );
   }, [search, coinList]);
-  function debounce<T extends (...args: any[]) => any>(
-    func: T,
-    delay: number
-  ): T {
-    let timeoutId: number;
-
-    return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func.apply(this, args), delay);
-    } as T;
-  }
+  
 
   const darkTheme = createTheme({
     palette: {
@@ -66,7 +59,7 @@ const CoinsTable = () => {
       },
     },
   });
-
+console.log(coinListStatus)
   return (
     <ThemeProvider theme={darkTheme}>
       <Container sx={{ textAlign: "center" }}>
@@ -124,7 +117,7 @@ const CoinsTable = () => {
                           sx={{ display: "flex", gap: "15px" }}
                         >
                           <img
-                            src={coin.image}
+                            src={coin.image as string}
                             alt=""
                             style={{ height: "50px", margin: "10 0" }}
                           />
@@ -159,7 +152,8 @@ const CoinsTable = () => {
                           {currencySymbol}{" "}
                           {numberWithCommas(
                             +coin.market_cap.toString().slice(0, -6)
-                          )}M
+                          )}
+                          M
                         </TableCell>
                       </TableRow>
                     );
@@ -175,8 +169,9 @@ const CoinsTable = () => {
             justifyContent: "center",
             ".Mui-selected": { color: "gold" },
           }}
-        renderItem={(item)=><PaginationItem {...item} disabled={page===item.page}/>} 
-
+          renderItem={(item) => (
+            <PaginationItem {...item} disabled={page === item.page} />
+          )}
           shape="rounded"
           count={+(searchedCoins?.length / 10).toFixed(0)}
           onChange={(_, value) => {
