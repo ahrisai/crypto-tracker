@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../redux/store";
 import { fetchSingleCoin } from "../redux/cryptoSlice";
@@ -35,7 +35,6 @@ const SideBar = styled.div`
   }
 `;
 
-const MarketInfo = styled.div``;
 
 const Coin = () => {
   
@@ -49,7 +48,7 @@ const Coin = () => {
   const { singleCoin, singleCoinStatus, currentCurrency, currencySymbol } =
     useSelector((state: RootState) => state.cryptoReducer);
   function truncateAfterSecondDot(sentence: string | undefined) {
-    if (!sentence) return;
+    if (!sentence) return 'No info';
 
     const firstDotIndex = sentence.indexOf(". ");
     const secondDotIndex = sentence.indexOf(". ", firstDotIndex + 1);
