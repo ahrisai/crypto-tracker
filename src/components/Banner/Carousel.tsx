@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { fetchTrending } from "../../redux/cryptoSlice";
 import { useSelector } from "react-redux";

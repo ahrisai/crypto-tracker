@@ -1,5 +1,4 @@
 import { FC } from "react";
-import styled from "styled-components";
 import { Coin } from "../../types/CryptoTypes";
 import { Card, CardActionArea, CardContent, CardMedia } from "@mui/material";
 import { numberWithCommas } from "../../helpers/numberWithCommas";

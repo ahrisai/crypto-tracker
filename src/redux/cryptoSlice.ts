@@ -23,7 +23,7 @@ interface ICryptoState{
 
     chartStatus:'idle'|'pending'|'error'|'fulfilled',
     chartError:string
-    chartPrices:ICryptoChart[]
+    chartPrices:any[]
 }
 
 interface IChartParams{
@@ -54,12 +54,14 @@ export const fetchChartInfo=createAsyncThunk(
     'cryptoReducer/fetchChartInfo',
     async (chartParams:IChartParams,{rejectWithValue}) => {
         
-        const response = axios.get<ICryptoChart>(`${HistoricalChart(chartParams.id,chartParams.days,chartParams.currency)}`)
+        const response = axios.get<ICryptoChart>(`${HistoricalChart(chartParams.id,chartParams.days,chartParams.currency)}`,{ validateStatus: status => status < 500 })
         .then(res=>{
              
                 return res.data
         })
         .catch(e=>{
+
+            
             return rejectWithValue(e.message)
         })
 
@@ -73,7 +75,7 @@ export const fetchTrending = createAsyncThunk(
         
         const response = axios.get<Coin[]>(`${TrendingCoins(currency)}`,{
         }).then(res=>{
-            console.log(res.data)
+            
             return res.data
         })
         .catch(e=>rejectWithValue(e.message))

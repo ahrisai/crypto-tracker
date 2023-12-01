@@ -11,7 +11,7 @@ import {
 
 import { ThemeProvider } from "@emotion/react";
 import { RootState, useAppDispatch } from "../../redux/store";
-import { IChangeCurrencyPayload, changeCurrency } from "../../redux/cryptoSlice";
+import {  changeCurrency } from "../../redux/cryptoSlice";
 import {useSelector} from 'react-redux'
 import { CurrencyType } from "../../types/currencyType";
 
