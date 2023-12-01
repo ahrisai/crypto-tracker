@@ -59,7 +59,6 @@ const CoinsTable = () => {
       },
     },
   });
-console.log(coinListStatus)
   return (
     <ThemeProvider theme={darkTheme}>
       <Container sx={{ textAlign: "center" }}>

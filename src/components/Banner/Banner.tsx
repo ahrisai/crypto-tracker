@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { Container, Typography } from "@mui/material";
 import Carousel from "./Carousel";

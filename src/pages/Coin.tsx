@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../redux/store";
 import { fetchSingleCoin } from "../redux/cryptoSlice";
@@ -35,7 +35,6 @@ const SideBar = styled.div`
   }
 `;
 
-const MarketInfo = styled.div``;
 
 const Coin = () => {
   
