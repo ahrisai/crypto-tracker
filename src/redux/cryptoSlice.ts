@@ -23,7 +23,7 @@ interface ICryptoState{
 
     chartStatus:'idle'|'pending'|'error'|'fulfilled',
     chartError:string
-    chartPrices:ICryptoChart[]
+    chartPrices:any[]
 }
 
 interface IChartParams{

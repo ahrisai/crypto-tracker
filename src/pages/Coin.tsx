@@ -49,7 +49,7 @@ const Coin = () => {
   const { singleCoin, singleCoinStatus, currentCurrency, currencySymbol } =
     useSelector((state: RootState) => state.cryptoReducer);
   function truncateAfterSecondDot(sentence: string | undefined) {
-    if (!sentence) return;
+    if (!sentence) return 'No info';
 
     const firstDotIndex = sentence.indexOf(". ");
     const secondDotIndex = sentence.indexOf(". ", firstDotIndex + 1);

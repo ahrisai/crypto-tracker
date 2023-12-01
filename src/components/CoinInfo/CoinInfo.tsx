@@ -4,6 +4,10 @@ import { RootState, useAppDispatch } from '../../redux/store'
 import { fetchChartInfo } from '../../redux/cryptoSlice'
 import styled from 'styled-components'
 import { CircularProgress } from '@mui/material'
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale,LinearScale,PointElement,LineElement,Legend } from 'chart.js';
+
+
 
 const ChartContainer=styled.div`
   width: 75%;
@@ -13,6 +17,7 @@ const ChartContainer=styled.div`
   justify-content: center;
   margin-top: 25px;
   padding: 40px;
+
   @media screen and (max-width:1000px) {
     width: 100%;
     margin-top: 0;
@@ -22,8 +27,11 @@ const ChartContainer=styled.div`
 `
 
 const CoinInfo = () => {
+ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Legend);
+
   const [days, setDays] = useState(1)
-  const {currentCurrency,currencySymbol,singleCoin}=useSelector((state:RootState)=>state.cryptoReducer)
+  const {currentCurrency,singleCoin,chartPrices,chartStatus}=useSelector((state:RootState)=>state.cryptoReducer)
+  
   const dispatch=useAppDispatch()
   useEffect(() => {
     if(singleCoin)
@@ -32,7 +40,53 @@ const CoinInfo = () => {
   
   return (
     <ChartContainer>
+      {chartStatus==='pending'
+      ?<CircularProgress
+      sx={{ color: "gold" }}
+      size={250}
+      thickness={1}
+    />
+      :<>
+      <Line
 
+      datasetIdKey='id'
+      data={{
+        labels: chartPrices.map((coin) => {
+          const date = new Date(coin[0]);
+          const time =
+            date.getHours() > 12
+              ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+              : `${date.getHours()}:${date.getMinutes()} AM`;
+          return days === 1 ? time : date.toLocaleDateString();
+        }),
+
+        datasets: [
+          {
+            label: `Price ( Past ${days} Days ) in ${currentCurrency}`,
+            data: chartPrices.map((coin) => coin[1]),
+            borderColor: "#EEBC1D",
+          },
+        ],
+      }}
+      
+      options={{
+        responsive:true,
+        plugins:{
+          legend:{
+            position:'top' as const,
+          }
+        },
+        elements: {
+          point: {
+            radius: 1,
+          },
+          
+        },
+      
+      }}
+    />
+    </>
+      }
     </ChartContainer>
   )
 }
